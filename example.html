@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Overalls: Easily Customizable Overlays for JQuery 1.4</title>
+    <style>
+    body {
+      background-color: #2E2E2E;
+      color: #fff;
+    	font-family: Arial, "MS Trebuchet", sans-serif;
+    	letter-spacing: 0.0em;
+    	font-size: 14.5px;
+    }
+    div#content {
+      width:800px;
+      padding:15px 30px 45px 30px;
+      margin: 60px auto 80px auto;
+      border:1px solid #eee;
+      background: #fff;
+      color: #1d1d1d;
+         -moz-border-radius: 8px; /* FF1+ */
+      -webkit-border-radius: 8px; /* Saf3+, Chrome */
+              border-radius: 8px; /* Opera 10.5, IE 9 */
+    }
+    a, a:visited{color:#00325B;}
+    a:hover{color:#004C96}
+    </style>
+    <!--[if IE]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="jquery.overalls.js"></script>
+    <script id="source" language="javascript" type="text/javascript">
+    $(function () {
+      $('a.basic-overlay').click(function(){
+        console.debug('clicked')
+        $.overalls('boom')
+      })
+    });
+    </script>
+ </head>
+<div id="content">
+  <h1>
+    JQuery.Overalls: Easily Customizable Overlays
+  </h1>
+  <h3>
+    Overlays Lightboxes Dialogs Oh My!
+  </h3>
+  <p>
+    This plugin is for developers and designers who want precise control over their overlays/lightboxs/dialogs.
+  </p>Lots of plugins out there make you use their design and add a ton of html to the page making customization not easy and brittle.
+  <p>
+    Overalls is simple: it places one huge semi-transparent div over the whole page and one div (overalls-overlay) to the page. Design the overall-overlay div in your css, add your html and whaala overlay goodness customized.
+  </p>
+  <h3>
+    Opening the overlay and putting html in it.
+  </h3>
+  <p>
+    Overalls adds a few interaction controls to get you going.
+  </p>
+  <p>
+    First, when you open the overlay you will get a click handler that close the overlay when you click on the transparent div or hit the ESC key.
+  </p>
+  <p><a href="javascript:void(0)" class="basic-overlay">Try a basic example</a></p>
+</div>
+
