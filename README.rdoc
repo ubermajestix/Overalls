@@ -1,7 +1,9 @@
 = JQuery.Overalls: Easily Customizable Overlays
 == Overlays, Lightboxes, Dialogs Oh My!
 This plugin is for developers and designers who want precise control over their overlays/lightboxs/dialogs.
-Lots of plugins out there make you use their design and add a ton of html to the page making customization not easy and brittle.
+Lots of plugins out there make you use their design and add a ton of html to the page making customization difficult and brittle.
+
+Overalls aims to be as lightweight as possible, low on configuration, and high on ease of customization to make complex ui interaction possible.
 
 == Overalls layout is stupid simple:
 - Places one huge semi-transparent div over the whole page.
