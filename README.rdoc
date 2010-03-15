@@ -49,3 +49,6 @@ You can override the blank divs styling using a css class:
 Done, just set "blank" to true in Overalls options, and you can drop in your fully formatted html as an overlay:
   html = $('div#pre-existing-html').html()
   $.overalls(html, {blank: true})
+==
+Browser support in: Safari and Firefox
+Chrome and IE7+ needs testing. 

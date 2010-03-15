@@ -99,7 +99,6 @@
       function max_z_index(){
         z = 0
         $('*').each(function() {
-          log('.')
           current = parseInt($(this).css('zIndex'));
           z = current > z ? current : z; 
         });

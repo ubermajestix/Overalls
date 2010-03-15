@@ -68,9 +68,7 @@
       close_link_html = $('div#close-link').html()
       $('a.close-link-overlay').click(function(){
         overalls = $.overalls(close_link_html)
-        console.debug(overalls)
         $('a.close-overlay').click(function(){
-          console.log('attempting to close')
           overalls.close()
         })
       })
