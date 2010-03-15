@@ -1,13 +1,12 @@
 = JQuery.Overalls: Easily Customizable Overlays
-
 == Overlays, Lightboxes, Dialogs Oh My!
 This plugin is for developers and designers who want precise control over their overlays/lightboxs/dialogs.
 Lots of plugins out there make you use their design and add a ton of html to the page making customization not easy and brittle.
 
 == Overalls layout is stupid simple:
-      - Places one huge semi-transparent div over the whole page.
-      - Adds one completely transparent div over the semi-transparent div in which to place your overlay div, it has no height.
-      - Appends the overalls-overlay div to the fully transparent div
+- Places one huge semi-transparent div over the whole page.
+- Adds one completely transparent div over the semi-transparent div in which to place your overlay div, it has no height.
+- Appends the overalls-overlay div to the fully transparent div
 == Opening Overalls (and putting html in it):
 Overalls is made to not be too smart, any html you give it, it'll put it in the overalls-overlay div
 
@@ -27,7 +26,7 @@ italic: Note: Overalls does not provide you with a close button, that's up to yo
   })
   
 == Customizing Overalls
-Overalls has three modes: basic, css-customizable, and blank
+Overalls has three modes:
 - Basic
 - CSS-Customizable
 - Blank
@@ -39,14 +38,12 @@ Just like above, its pretty darn easy:
   $.overalls(html)   
   
 === CSS Customizable
-Say I had a designer give me some kickass mocks for a project that has custom overlays. 
-With Overalls I can apply the designer's background image to the overalls-overlay div using a css class and then
-drop in the all the html I want.
+You can override the blank divs styling using a css class:
 
     html = $('div#html-example').html()
     $.overalls(html, {cssClass: 'custom-overlay'})
   
 === Blank Mode (I have the html, just give me a blank div!)
-Done, just set "blank" to true in Overalls options: 
+Done, just set "blank" to true in Overalls options, and you can drop in your fully formatted html as an overlay:
   html = $('div#pre-existing-html').html()
   $.overalls(html, {blank: true})
