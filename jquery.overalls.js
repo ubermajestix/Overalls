@@ -10,12 +10,6 @@
       // overalls-transparent div:
       //   opacity
       //   color
-      // overalls-overlay div
-      //   height
-      //   width
-      //   page placement
-      //   css-class
-      //   
       
       
       close_overalls(); //clear any existing overlays
@@ -46,7 +40,6 @@
         height: '0',
         zIndex: z_index + 1,
         background: 'transparent'
-        // 'transparent'
       }
       super_transparent_div = $('<div id="overalls-super-transparent"></div>').css(super_transparent_css)
       .appendTo('body')
@@ -58,31 +51,53 @@
         height: '350px',//remove this to resize to the content
         width: '650px',//remove this to resize to the content
         padding: '20px',
-        marginLeft: 'auto',
-        marginRight: 'auto',
         zIndex: z_index + 2,
         opacity: 1.0
       }
+
+      overlay_div = $('<div id="overalls-overlay"></div>')
       
-      
-      overlay_div = $('<div id="overalls-overlay"></div>').css({marginTop:$(document).scrollTop() + 30})
-      if(opts.cssClass){
+      // blank mode
+      if(opts.blank == true){
+        // no-op, but explicitly set width of overalls-overlay later so click to close works
+      }
+      // css-customizable mode
+      else if(opts.cssClass){
         log('adding css class', opts.cssClass)
         overlay_div.addClass(opts.cssClass)
       }
-      else if(opts.blank == true){
-        // no-op
-      }
+      // basic mode
       else{
         overlay_div.css(overlay_css)
       }
       overlay_div.html(html)
       .appendTo(super_transparent_div)
       
+      
+      // positions the overlay in the verticle center if its small enough to fit, and the horizontal center
+      default_margin = {
+        marginTop:$(document).scrollTop(),
+        marginLeft: 'auto',
+        marginRight: 'auto'
+      }
+      centering_margin = $(window).height()/2 - $('div#overalls-overlay').height()/2
+      if(centering_margin > 0)
+        default_margin.marginTop = default_margin.marginTop + centering_margin
+      else
+        default_margin.marginTop = default_margin.marginTop + 30
+      overlay_div.css(default_margin)
+       
+      //set width of overalls-overlay so click to close works 
+      if(opts.blank == true){
+        overlay_div.css({width: $(overlay_div).children(':first').width()})
+      }
+      
+      // Fade in the overlays
       $(transparency_div).fadeTo("slow", 0.6)
       $(overlay_div).fadeTo("slow", 1.0)
     
-      document.onkeyup = (function(e) {
+      // bind the escape key
+      $(document).bind('keyup.overalls', function(e) {
         if (e.keyCode == 27) {
           close_overalls();
         };
@@ -93,6 +108,7 @@
       
       function close_overalls(){
         log('taking the overalls off')
+        $(document).unbind('keyup.overalls')
         all_divs = $('div#overalls-transparency, div#overalls-super-transparent, div#overalls-overlay').fadeOut(600)
         setTimeout(function(){all_divs.remove()},650)
       }  
@@ -106,17 +122,14 @@
         return z + 1;
       }
 
-
       function log() {
           if (window.console) {
               console.log.apply(console, arguments);
           }
       }
       
-      
     } // end of Overalls
 
-    
   $.overalls = function(html, opts){
     if(!opts)
       opts = {}
