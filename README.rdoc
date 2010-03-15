@@ -5,14 +5,14 @@ This plugin is for developers and designers who want precise control over their 
 Lots of plugins out there make you use their design and add a ton of html to the page making customization not easy and brittle.
 
 == Overalls layout is stupid simple:
-      - Places one huge semi-transparent div over the whole page.</li>
-      - Adds one completely transparent div over the semi-transparent div in which to place your overlay div, it has no height.</li>
-      - Appends the overalls-overlay div to the fully transparent div</li>
+      - Places one huge semi-transparent div over the whole page.
+      - Adds one completely transparent div over the semi-transparent div in which to place your overlay div, it has no height.
+      - Appends the overalls-overlay div to the fully transparent div
 == Opening Overalls (and putting html in it):
 Overalls is made to not be too smart, any html you give it, it'll put it in the overalls-overlay div
 
-    html = $('div#html-example').html()
-    $.overalls(html)
+  html = $('div#html-example').html()
+  $.overalls(html)
 
 
 == Closing Overalls
@@ -20,19 +20,25 @@ Its pretty easy, you get a click handler on the transparent div and a keypress e
 Optionally, you can call the "close" method on the Overalls object. It will fadeout the divs and remove them from the page.
 italic: Note: Overalls does not provide you with a close button, that's up to you to handle.
 
-    // For instance you might want a close button in the overlay:
-    overalls = $.overalls(html)
-    $('a.close_overlay').click(function(){
-      overalls.close()
-    })
+  // For instance you might want a close button in the overlay:
+  overalls = $.overalls(html)
+  $('a.close_overlay').click(function(){
+    overalls.close()
+  })
   
 == Customizing Overalls
-Overalls has three modes: basic, css-customizable, and blank</p>
-  - Basic
-  - CSS-Customizable
-  - Blank
-    
-== CSS Customizable
+Overalls has three modes: basic, css-customizable, and blank
+- Basic
+- CSS-Customizable
+- Blank
+
+=== Basic
+Just like above, its pretty darn easy: 
+
+  html = $('div#html-example').html()
+  $.overalls(html)   
+  
+=== CSS Customizable
 Say I had a designer give me some kickass mocks for a project that has custom overlays. 
 With Overalls I can apply the designer's background image to the overalls-overlay div using a css class and then
 drop in the all the html I want.
@@ -40,7 +46,7 @@ drop in the all the html I want.
     html = $('div#html-example').html()
     $.overalls(html, {cssClass: 'custom-overlay'})
   
-== Blank Mode (I have the html, just give me a blank div!)
-Done, just set "blank" to true in Overalls options: </p>
+=== Blank Mode (I have the html, just give me a blank div!)
+Done, just set "blank" to true in Overalls options: 
   html = $('div#pre-existing-html').html()
   $.overalls(html, {blank: true})
