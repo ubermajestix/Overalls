@@ -1,4 +1,4 @@
-= JQuery.Overalls: Easily Customizable Overlays
+= Overalls: Easily Customizable Overlays for JQuery 1.4
 == Overlays, Lightboxes, Dialogs Oh My!
 This plugin is for developers and designers who want precise control over their overlays/lightboxs/dialogs.
 Lots of plugins out there make you use their design and add a ton of html to the page making customization difficult and brittle.
@@ -50,5 +50,9 @@ Done, just set "blank" to true in Overalls options, and you can drop in your ful
   html = $('div#pre-existing-html').html()
   $.overalls(html, {blank: true})
 ==
-Browser support in: Safari and Firefox
-Chrome and IE7+ needs testing. 
+Browser support in: 
+- Safari
+- Firefox
+Needs testing: 
+- Chrome
+- IE7+
