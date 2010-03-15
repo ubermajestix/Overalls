@@ -82,6 +82,20 @@
       $('a.pre-existing-overlay').click(function(){
         $.overalls(pre_existing_html, {blank: true})
       })
+      
+      $('a.custom-transparency-overlay-1').click(function(){
+         $.overalls(basic_html, {opacity: 0.1, color:'#f0f'})
+       })
+      $('a.custom-transparency-overlay-2').click(function(){
+         $.overalls(basic_html, {opacity: 0.5, color:'#FFDF95'})
+       })
+      $('a.custom-transparency-overlay-3').click(function(){
+         $.overalls(basic_html, {opacity: 1, color:'#000'})
+       })
+      $('a.custom-transparency-overlay-4').click(function(){
+         $.overalls(basic_html, {opacity: 0.75, color:'#fff'})
+       })
+
     });
     </script>
  </head>
@@ -384,9 +398,8 @@
   
   
   <h3>CSS Customizable</h3>
-  <p>Say I had a designer give me some kickass mocks for a project that has custom overlays. 
-  With Overalls I can apply the designer's background image to the overalls-overlay div using a css class and then
-  drop in the all the html I want. </p>
+  <p>You can override the blank divs styling using a css class:
+   </p>
   <pre>
     html = $('div#html-example').html()
     $.overalls(html, {cssClass: 'custom-overlay'})
@@ -400,6 +413,16 @@
     $.overalls(html, {blank: true})
   </pre>
   <p><a href="javascript:void(0)" class="pre-existing-overlay">Try the pre-existing perfect html example</a></p>
+  
+  <h3>Transparency Customization:</h3>
+  <p>You can set the color and opacity of the transparent div like so:</p>
+  <pre>
+    $.overalls(html, {opacity: 0.1, color:'#f0f'})
+  </pre>
+  <p><a href="javascript:void(0)" class="custom-transparency-overlay-1">Try the custom transparency example 1</a></p>
+  <p><a href="javascript:void(0)" class="custom-transparency-overlay-2">Try the custom transparency example 2</a></p>
+  <p><a href="javascript:void(0)" class="custom-transparency-overlay-3">Try the custom transparency example 3</a></p>
+  <p><a href="javascript:void(0)" class="custom-transparency-overlay-4">Try the custom transparency example 4</a></p>
   
 </div>
 

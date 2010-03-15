@@ -4,16 +4,15 @@
 */
 (function($) {
   function Overalls(html, opts){
-      // alert('overalls: ' + message)
-      // return false;
-      // options for:
-      // overalls-transparent div:
-      //   opacity
-      //   color
+      overalls = this
+      overalls.close = close_overalls
+      overalls.opacity = 0.6
+      overalls.color = "#1d1d1d"
+      parse_options(opts)
+      log('overalls: ', overalls)
       
-      
-      close_overalls(); //clear any existing overlays
-      z_index = max_z_index() //make sure Overalls is the highest z-index'd set of divs (avoids hardcoding rediculous z-index)
+      close_overalls(); // clear any existing overlays
+      z_index = max_z_index() // make sure Overalls is the highest z-index'd set of divs (avoids hardcoding rediculous z-index)
       
       // add transparency to 100% of the document
       transparency_css = {
@@ -22,9 +21,9 @@
         left:0,
         width: '100%',
         height: '100%',
-        opacity: 0.0, //option
+        opacity: 0.0, //f ades up to specified opactiy later
         zIndex: z_index,
-        background: '#1d1d1d' //option
+        background: overalls.color // option
       }
       
       transparency_div = $('<div id="overalls-transparency"></div>').css(transparency_css)
@@ -93,7 +92,7 @@
       }
       
       // Fade in the overlays
-      $(transparency_div).fadeTo("slow", 0.6)
+      $(transparency_div).fadeTo("slow", overalls.opacity)
       $(overlay_div).fadeTo("slow", 1.0)
     
       // bind the escape key
@@ -103,8 +102,7 @@
         };
       });
       
-      overalls = this
-      overalls.close = close_overalls
+
       
       function close_overalls(){
         log('taking the overalls off')
@@ -120,6 +118,13 @@
           z = current > z ? current : z; 
         });
         return z + 1;
+      }
+      
+      function parse_options(opts){
+        if(opts.opacity)
+          overalls.opacity = opts.opacity
+        if(opts.color)
+          overalls.color = opts.color
       }
 
       function log() {
