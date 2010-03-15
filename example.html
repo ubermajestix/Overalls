@@ -3,9 +3,11 @@
  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Overalls: Easily Customizable Overlays for JQuery 1.4</title>
+    <link rel="stylesheet" href="style-popups.css" type="text/css" media="all" />
+  	
     <style>
     body {
-      background-color: #2E2E2E;
+      background-color: #ddd; /*#2e2e2e is nice too*/
       color: #fff;
     	font-family: Arial, "MS Trebuchet", sans-serif;
     	letter-spacing: 0.0em;
@@ -24,41 +26,383 @@
     }
     a, a:visited{color:#00325B;}
     a:hover{color:#004C96}
+    h3{margin-top:25px;}
+    pre{
+      background: #eee;
+      border:1px solid #ddd;
+      padding: 20px 0px 5px 0px;
+    }
+    div.note{
+      color:#EAA028;
+      font-weight:bold;
+      font-size:0.8em;
+      margin:10px;
+    }
+    
+    
+    div.custom_overlay {
+      color: #1d1d1d;
+      width: 755px;
+      height: 929px;
+      margin: 0 auto 0 auto;
+      background: url(custom-overlay.png) no-repeat 0 0;
+    }
+    div.custom-inner{
+      padding:40px 60px;
+    }
+    .custom-inner span{
+      color:#009BFF;
+    }
+
     </style>
-    <!--[if IE]><script language="javascript" type="text/javascript" src="../excanvas.min.js"></script><![endif]-->
     <script language="javascript" type="text/javascript" src="jquery.js"></script>
     <script language="javascript" type="text/javascript" src="jquery.overalls.js"></script>
     <script id="source" language="javascript" type="text/javascript">
     $(function () {
+      lorem_ipsum = $('div#lorem-ipsum').html()
+      basic_html = $('div#basic-example').append(lorem_ipsum).html()
       $('a.basic-overlay').click(function(){
-        console.debug('clicked')
-        $.overalls('boom')
+        $.overalls(basic_html)
+      })
+      
+      close_link_html = $('div#close-link').html()
+      $('a.close-link-overlay').click(function(){
+        overalls = $.overalls(close_link_html)
+        console.debug(overalls)
+        $('a.close-overlay').click(function(){
+          console.log('attempting to close')
+          overalls.close()
+        })
+      })
+      
+      custom_html = $('div#custom-example').html()
+      $('a.custom-overlay').click(function(){
+        $.overalls(custom_html, {cssClass: 'custom_overlay'})
+      })
+      
+      pre_existing_html = $('div#pre-existing-example').html()
+      $('a.pre-existing-overlay').click(function(){
+        $.overalls(pre_existing_html, {blank: true})
       })
     });
     </script>
  </head>
 <div id="content">
+    <div id="lorem-ipsum" style="display:none;">
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+      sed do eiusmod tempor incididunt ut labore et dolore magna 
+      aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+      ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+      Duis aute irure dolor in reprehenderit in voluptate velit 
+      esse cillum dolore eu fugiat nulla pariatur. Excepteur sint 
+      occaecat cupidatat non proident, sunt in culpa qui officia 
+      deserunt mollit anim id est laborum.
+  </div>
+  <div id="basic-example" style="display:none;">
+    <h3>This is the basic overlay</h3>
+  </div>
+  
+  <div id="close-link" style="display:none;">
+    boom!
+    <a href="javascript:void(0)" class="close-overlay" style="float:right">close me</a>
+  </div>
+  
+  <div id="custom-example" style="display:none;">
+    <div class="custom-inner">
+      <h3>Custom stuff!</h3>
+      <p>It needs to look <span>different</span>, so it stands out!</p>
+    </div>
+
+  </div>
+  
+  <div id="pre-existing-example" style="display:none;">
+    <div id="popup-culture-1" class="popup">
+    	<div class="popup-cnt">
+    		<div class="popup-header">
+    			<h2>Evaluation: <span>11% Complete</span></h2>
+    			<h3>Understanding things</h3>
+    			<p>Please list the 9 values that best describe you and the 9 that don’t describe you at all. By identifying the ones that most and least characterize you. </p>
+    			<p class="big">Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor.</p>
+    		</div>			
+    		<div class="culture-listing">
+    			<div class="culture-listing-item">
+    				<p class="listing-number">1.</p>
+    				<p class="listing-title">Creativity </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes chosen-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">2.</p>
+    				<p class="listing-title">Yoga Style </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">3.</p>
+    				<p class="listing-title">Juggling </p>
+    				<p class="listing-results">
+    					<span class="result-no chosen-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">4.</p>
+    				<p class="listing-title">Being Competitive </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya chosen-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">5.</p>
+    				<p class="listing-title">Being highly organized </p>
+    				<p class="listing-results">
+    					<span class="result-no chosen-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">6.</p>
+    				<p class="listing-title">Being distinctive </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes chosen-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">7.</p>
+    				<p class="listing-title">Enthusiam for the job </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">8.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya chosen-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">9.</p>
+    				<p class="listing-title">Desiring a well definined role </p>
+    				<p class="listing-results">
+    					<span class="result-no chosen-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">10.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">11.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">12.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes chosen-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">13.</p>
+    				<p class="listing-title">Enthusiam for the job </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">14.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya chosen-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">15.</p>
+    				<p class="listing-title">Desiring a well definined role </p>
+    				<p class="listing-results">
+    					<span class="result-no chosen-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">16.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item">
+    				<p class="listing-number">17.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na chosen-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes">Yes</span>
+    				</p>
+    			</div>
+    			<div class="culture-listing-item last-listing-item">
+    				<p class="listing-number">18.</p>
+    				<p class="listing-title">Being quick to take advantage of opportunities </p>
+    				<p class="listing-results">
+    					<span class="result-no">No</span>
+    					<span class="result-na">Na</span>
+    					<span class="result-ya">Ya</span>
+    					<span class="result-yes chosen-yes">Yes</span>
+    				</p>
+    			</div>
+    		</div>	
+    		<div class="popup-buttons">
+    			<div class="cl">&nbsp;</div>
+    			<a href="#" class="next-button">Next</a>
+    			<a href="#" class="save-for-now-button">Save for Now</a>
+    			<div class="cl">&nbsp;</div>
+    		</div>
+    		<div class="popup-bottom">
+    			<p>Estimated time: 5 mins</p>
+    		</div>
+    	</div>
+    </div>
+  </div>
   <h1>
     JQuery.Overalls: Easily Customizable Overlays
   </h1>
   <h3>
-    Overlays Lightboxes Dialogs Oh My!
+    Overlays, Lightboxes, Dialogs Oh My!
   </h3>
   <p>
     This plugin is for developers and designers who want precise control over their overlays/lightboxs/dialogs.
   </p>Lots of plugins out there make you use their design and add a ton of html to the page making customization not easy and brittle.
-  <p>
-    Overalls is simple: it places one huge semi-transparent div over the whole page and one div (overalls-overlay) to the page. Design the overall-overlay div in your css, add your html and whaala overlay goodness customized.
-  </p>
+    <h3>Overalls layout is stupid simple:</h3>
+    <ul>
+      <li>Places one huge semi-transparent div over the whole page.</li>
+      <li>Adds one completely transparent div over the semi-transparent div in which to place your overlay div, it has no height.</li>
+      <li>Appends the overalls-overlay div to the fully transparent div</li>
+    </ul>
   <h3>
-    Opening the overlay and putting html in it.
+    Opening Overalls (and putting html in it):
   </h3>
+  <p>Overalls is made to not be too smart, any html you give it, it'll put it in the overalls-overlay div</p>
+  <pre>
+    html = $('div#html-example').html()
+    $.overalls(html)
+  </pre>
+  <p><a href="javascript:void(0)" class="basic-overlay">Try the basic example</a></p>
+
+  <h3>Closing Overalls</h3>
   <p>
-    Overalls adds a few interaction controls to get you going.
+     Its pretty easy, you get a click handler on the transparent div and a keypress event on the escape key that closes the overlay.
   </p>
   <p>
-    First, when you open the overlay you will get a click handler that close the overlay when you click on the transparent div or hit the ESC key.
-  </p>
-  <p><a href="javascript:void(0)" class="basic-overlay">Try a basic example</a></p>
+    Optionally, you can call the "close" method on the Overalls object. It will fadeout the divs and remove them from the page. </p>
+    <div class="note">Note: Overalls does not provide you with a close button, that's up to you to handle.</div>
+  
+  <pre>
+    // For instance you might want a close button in the overlay:
+    overalls = $.overalls(html)
+    $('a.close_overlay').click(function(){
+      overalls.close()
+    })
+  </pre>
+  
+  <p><a href="javascript:void(0)" class="close-link-overlay">Try the basic example with a close link</a></p>
+  
+  
+  <h3>Customizing Overalls</h3>
+  
+  <p>Overalls has three modes: basic, css-customizable, and blank</p>
+  <ul>
+    <li>
+      <h4>Basic</h4>
+      <p>Basic mode is just like the basic example above, a plain white div, with a black semi-transparent background</p>
+      <p>Pop in your html and you're done.</p>
+    </li>
+    <li>
+      <h4>CSS-Customizable</h4>
+      <p>Customizable mode allows you to set the css class of the overlay div.</p>
+      <p>An example is below</p>
+    </li>
+    <li>
+      <h4>Blank</h4>
+      <p>Blank mode does not style the overlay div at all.</p>
+      <p>This mode is intended for you to place your fully styled html into the overlay and not worry about any other styles affecting your content</p>
+      <p>An example of is outlined below</p>
+    </li>
+    
+  </ul>
+  
+  
+  <h3>CSS Customizable</h3>
+  <p>Say I had a designer give me some kickass mocks for a project that has custom overlays. 
+  With Overalls I can apply the designer's background image to the overalls-overlay div using a css class and then
+  drop in the all the html I want. </p>
+  <pre>
+    html = $('div#html-example').html()
+    $.overalls(html, {cssClass: 'custom-overlay'})
+  </pre>
+  <p><a href="javascript:void(0)" class="custom-overlay">Try the custom css class example</a></p>
+  
+  <h3>Blank Mode (I have the html, just give me a blank div!)</h3>
+  <p>Done, just set "blank" to true in Overalls options: </p>
+  <pre>
+    html = $('div#pre-existing-html').html()
+    $.overalls(html, {blank: true})
+  </pre>
+  <p><a href="javascript:void(0)" class="pre-existing-overlay">Try the pre-existing perfect html example</a></p>
+  
 </div>
 
