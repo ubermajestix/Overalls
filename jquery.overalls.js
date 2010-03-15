@@ -64,7 +64,8 @@
         opacity: 1.0
       }
       
-      overlay_div = $('<div id="overalls-overlay"></div>').css({marginTop:$('body').scrollTop() + 30})
+      
+      overlay_div = $('<div id="overalls-overlay"></div>').css({marginTop:$(document).scrollTop() + 30})
       if(opts.cssClass){
         log('adding css class', opts.cssClass)
         overlay_div.addClass(opts.cssClass)
