@@ -59,6 +59,26 @@ You can set the color and opacity of the transparent div like so:
 Browser support in: 
 - Safari
 - Firefox
-Needs testing: 
 - Chrome
-- IE7+
+- IE7 (needs pngFix)
+== Inspiration
+I developed this out of the need to just pass formatted html into a lightbox-like-thing. In addition, a lot of the plugins I've used
+didn't either play nice with Rails or were hard to customize. No name naming here, I'm sure if you're reading this you've played with
+a few other lightbox/overlay plugins you know which ones I'm talking about. 
+
+So here's what I'm excited to do with this plugin:
+  $.ajax({
+    url: '/some/url/that/hits/rails/and/returns/a/partial'
+    type: 'GET'
+    dataType: 'html'
+    success: function(html){
+      $.overalls(html, {blank: true})
+    }
+  })
+  })
+I've been abandoning the Rails helpers and even JRails in favor of writing pure JQuery ajax (IN A RAILS APP OMG OMG NO WAY!). This has solved so many complex interaction headaches.
+I don't know about you but I hate RJS templates. With JQuery ajax I can easily control (in JQuery, not some js like railsy dsl) what the user sees
+when an ajax request happens: hiding/showing loader gifs, displaying error messages, updating a lot of divs, making subsequent ajax calls
+if needed, maintaining page state in the url (thanks to the awesome awesome awesome BBQ plugin), etc.
+
+Anyway, I hope you find this plugin helpful, let me know if you have problems, and send me links of it in the wild.
