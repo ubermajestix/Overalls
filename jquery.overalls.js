@@ -156,6 +156,19 @@
         if (!opts)
         opts = {}
         var overalls = new Overalls(html, opts)
+        close: function() {
+            overalls.close()
+        }
         return overalls
+    }
+
+    $.overalls.close = function() {
+        log('taking the overalls off')
+        $(document).unbind('keyup.overalls')
+        all_divs = $('div#overalls-transparency, div#overalls-super-transparent, div#overalls-overlay').fadeOut(600)
+        setTimeout(function() {
+            all_divs.remove()
+        },
+        650)
     }
 })(jQuery);

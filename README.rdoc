@@ -22,9 +22,9 @@ Optionally, you can call the "close" method on the Overalls object. It will fade
 italic: Note: Overalls does not provide you with a close button, that's up to you to handle.
 
   // For instance you might want a close button in the overlay:
-  overalls = $.overalls(html)
+  $.overalls(html)
   $('a.close_overlay').click(function(){
-    overalls.close()
+    $.overalls.close()
   })
   
 == Customizing Overalls
