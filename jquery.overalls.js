@@ -1,5 +1,5 @@
 /* Overalls: Easily Customizable Overlays for Jquery v 1.4
-   Released under the MIT license by Tyler Montgomery March 2010 
+   Released under the MIT license by Tyler Montgomery March 2010
    http://github.com/ubermajestix/jquery.overalls
 */
 
@@ -8,13 +8,17 @@
   var Overalls = function() {
   }
 
+
   $.extend(Overalls.prototype, {
+
+    // show a new overalls overlay
     display: function(html, callback) {
       var self = this;
+      var transparency = $('#overalls-transparency');
+      if(!transparency.length) {
+        transparency = $('<div id="overalls-transparency"></div>').appendTo($('body'));
+      }
 
-      var transparency = this.transparencyDiv();
-
-      // set the css each time in case options change
       transparency.css({
         position: 'fixed',
         top: 0,
@@ -22,27 +26,72 @@
         width: '100%',
         height: '100%',
         opacity: 0.0, // fades up to specified opacity later
-        display: 'block', // make sure it's visible
         zIndex: this.options.zIndex,
-        background: this.options.color
+        backgroundColor: this.options.color
       });
 
-      var container = $('<div id="overalls-container"></div>').css({
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '0',
-        opacity: 0.0,
-        zIndex: this.options.zIndex + 1,
-        background: 'transparent'
-      }).appendTo('body');
+      this.setContent(html);
 
-      var overlay = $('<div id="overalls-overlay"></div>').html(html);
+      transparency.fadeTo('normal', this.options.opacity)
+        .bind('click.overalls', function() { self.close(); });
+      $(document).bind('keyup.overalls', function(e) {
+        if (e.keyCode == 27) { self.close(); };
+      });
 
-      if(this.options.blank) {
-        // noop
+      this.showContent(callback);
+
+    },
+
+    // replace an existing overalls overlay
+    replace: function(html, callback) {
+      var self = this;
+      $('#overalls-container').fadeTo('normal', 0, function() {
+        $(this).html('');
+        self.setContent(html);
+        var transparency = $('#overalls-transparency');
+        transparency.animate({
+          zIndex: self.options.zIndex,
+          opacity: self.options.opacity,
+          backgroundColor: self.options.color
+        });
+        self.showContent(callback);
+      });
+    },
+
+    // close the overalls overlay
+    close: function() {
+      $(document).unbind('.overalls'); // key handler
+      $('#overalls-transparency')
+        .unbind('.overalls') // click handler
+        .fadeOut('normal');
+      $('#overalls-container').fadeOut('normal', function() {
+        $(this).remove();
+      });
+    },
+
+    setContent: function(html) {
+      var container = $('#overalls-container');
+      if(!container.length) {
+        container = $('<div id="overalls-container"></div>').css({
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '0',
+          opacity: 0.0,
+          background: 'transparent'
+        }).appendTo('body');
       }
+
+      container.css({zIndex: this.options.zIndex + 1 });
+
+      var overlay = $('#overalls-overlay');
+      if(!overlay.length) {
+        overlay = $('<div id="overalls-overlay"></div>');//.appendTo(container);
+      }
+      overlay.html(html);
+
+      if(this.options.blank) { } // noop
       else {
         if(this.options.cssClass) {
           overlay.addClass(this.options.cssClass);
@@ -59,7 +108,8 @@
         }
       }
 
-      overlay.appendTo(container);
+      container.html(overlay);
+      // overlay.appendTo(container);
 
       // set width/height/margins
       var default_margin = {
@@ -84,44 +134,17 @@
         });
       }
 
-      // now that everything's set, fade it in
-      transparency.fadeTo('normal', this.options.opacity);
-      container.fadeTo('normal', 1.0);
-
-      $(document).bind('keyup.overalls', function(e) {
-        if (e.keyCode == 27) {
-          self.close();
-        };
-      });
-
-      transparency.bind('click.overalls', function() { self.close(); });
-      // overlay.bind('click.overalls', function() { return false; }); // allow clicks on the overlay
-
-      if(callback) { callback.apply(overlay, []); };
     },
 
-    close: function(callback) {
-      $(document).unbind('.overalls');
-      $('#overalls-container').fadeOut('normal', function() {
-        $(this).remove();
-      });
-      $('#overalls-transparency')
-        .unbind('.overalls')
-        .fadeOut('normal', function() {
-          if(callback) { callback() };
-        });
+    showContent: function(callback) {
+      $('#overalls-container').fadeTo('normal', 1.0);
+      if(callback) { callback.apply($('#overalls-overlay'), []); };
     },
 
     isVisible: function() {
       return $('#overalls-overlay').is(':visible');
     },
 
-    transparencyDiv: function() {
-      if(!$('#overalls-transparency').length) {
-        $('body').append($('<div id="overalls-transparency"></div>'));
-      }
-      return $('#overalls-transparency');
-    }
   });
 
   $.overalls = function(html, opts, callback) {
@@ -130,9 +153,7 @@
     overalls.options = $.extend({}, $.overalls.defaults, opts || {});
 
     if(overalls.isVisible()) {
-      overalls.close(function() {
-        overalls.display(html, callback)
-      });
+      overalls.replace(html, callback);
     }
     else {
       overalls.display(html, callback);
