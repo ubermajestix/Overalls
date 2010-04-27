@@ -5,9 +5,7 @@
 
 (function($) {
 
-  var Overalls = function() {
-  }
-
+  var Overalls = function() {}
 
   $.extend(Overalls.prototype, {
 
@@ -39,7 +37,6 @@
       });
 
       this.showContent(callback);
-
     },
 
     // replace an existing overalls overlay
@@ -88,12 +85,11 @@
 
       var overlay = $('#overalls-overlay');
       if(!overlay.length) {
-        overlay = $('<div id="overalls-overlay"></div>');//.appendTo(container);
+        overlay = $('<div id="overalls-overlay"></div>');
       }
       overlay.html(html);
 
-      if(this.options.blank) { } // noop
-      else {
+      if(!this.options.blank) {
         if(this.options.cssClass) {
           overlay.addClass(this.options.cssClass);
         }
@@ -110,7 +106,6 @@
       }
 
       container.html(overlay);
-      // overlay.appendTo(container);
 
       // set width/height/margins
       var default_margin = {
@@ -129,10 +124,7 @@
       overlay.css(default_margin);
 
       if (this.options.blank) {
-        overlay.css({
-          width: overlay.children(':first').width(),
-          // height: overlay.children(':first').height()
-        });
+        overlay.css({ width: overlay.children(':first').width() });
       }
 
     },
