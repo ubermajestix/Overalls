@@ -1,161 +1,166 @@
 /* Overalls: Easily Customizable Overlays for Jquery v 1.4
    Released under the MIT license by Tyler Montgomery March 2010 
-   http://github.com/ubermajestx/jquery.overalls
+   http://github.com/ubermajestix/jquery.overalls
 */
- (function($) {
-    function Overalls(html, opts) {
-        overalls = this
-        overalls.close = close_overalls
-        overalls.opacity = 0.6
-        overalls.color = "#1d1d1d"
-        parse_options(opts)
-        log('overalls: ', overalls)
 
-        close_overalls();
-        // clear any existing overlays
-        z_index = max_z_index()
-        // make sure Overalls is the highest z-index'd set of divs (avoids hardcoding rediculous z-index)
-        // add transparency to 100% of the document
-        transparency_css = {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            opacity: 0.0,
-            //f ades up to specified opactiy later
-            zIndex: z_index,
-            background: overalls.color
-            // option
+(function($) {
+
+  var Overalls = function() {
+  }
+
+  $.extend(Overalls.prototype, {
+    display: function(html, callback) {
+      var self = this;
+
+      var transparency = this.transparencyDiv();
+
+      // set the css each time in case options change
+      transparency.css({
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        opacity: 0.0, // fades up to specified opacity later
+        display: 'block', // make sure it's visible
+        zIndex: this.options.zIndex,
+        background: this.options.color
+      });
+
+      var container = $('<div id="overalls-container"></div>').css({
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '0',
+        opacity: 0.0,
+        zIndex: this.options.zIndex + 1,
+        background: 'transparent'
+      }).appendTo('body');
+
+      var overlay = $('<div id="overalls-overlay"></div>').html(html);
+
+      if(this.options.blank) {
+        // noop
+      }
+      else {
+        if(this.options.cssClass) {
+          overlay.addClass(this.options.cssClass);
         }
-
-        transparency_div = $('<div id="overalls-transparency"></div>').css(transparency_css)
-        .click(function() {
-            close_overalls()
-        })
-        .appendTo('body')
-
-        // make another completely transparent div to place the overly div inside of
-        super_transparent_css = {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '0',
-            zIndex: z_index + 1,
-            background: 'transparent'
-        }
-        super_transparent_div = $('<div id="overalls-super-transparent"></div>').css(super_transparent_css)
-        .appendTo('body')
-
-        // add overlay div to page
-        overlay_css = {
+        else {
+          overlay.css({
             background: '#fff',
             color: '#1d1d1d',
-            height: '350px',
-            //remove this to resize to the content
-            width: '650px',
-            //remove this to resize to the content
-            padding: '20px',
-            zIndex: z_index + 2,
-            opacity: 1.0
+            width: this.options.width,
+            height: this.options.height,
+            opacity: 1.0,
+            padding: '10px'
+          });
         }
+      }
 
-        overlay_div = $('<div id="overalls-overlay"></div>')
+      overlay.appendTo(container);
 
-        // blank mode
-        if (opts.blank == true) {
-            // no-op, but explicitly set width of overalls-overlay later so click to close works
-            }
-        // css-customizable mode
-        else if (opts.cssClass) {
-            log('adding css class', opts.cssClass)
-            overlay_div.addClass(opts.cssClass)
-        }
-        // basic mode
-        else {
-            overlay_div.css(overlay_css)
-        }
-
-        // put the overlay div on the page THEN put the html in it
-        // js that accesses the rendered html blowz up otherwise
-        overlay_div
-        .appendTo(super_transparent_div)
-        .html(html)
-
-
-        // positions the overlay in the verticle center if its small enough to fit, and the horizontal center
-        default_margin = {
-            marginTop: $(document).scrollTop(),
-            marginLeft: 'auto',
-            marginRight: 'auto'
-        }
-        centering_margin = $(window).height() / 2 - $('div#overalls-overlay').height() / 2
-        if (centering_margin > 0)
+      // set width/height/margins
+      var default_margin = {
+        marginTop: $(document).scrollTop(),
+        marginLeft: 'auto',
+        marginRight: 'auto'
+      }
+      var centering_margin = $(window).height() / 2 - overlay.height() / 2
+      if (centering_margin > 0) {
         default_margin.marginTop = default_margin.marginTop + centering_margin
-        else
+      }
+      else {
         default_margin.marginTop = default_margin.marginTop + 30
-        overlay_div.css(default_margin)
+      }
 
-        //set width of overalls-overlay so click to close works
-        if (opts.blank == true) {
-            overlay_div.css({
-                width: $(overlay_div).children(':first').width()
-            })
-        }
+      overlay.css(default_margin);
 
-        // Fade in the overlays
-        $(transparency_div).fadeTo("slow", overalls.opacity)
-        $(overlay_div).fadeTo("slow", 1.0)
-
-        // bind the escape key
-        $(document).bind('keyup.overalls',
-        function(e) {
-            if (e.keyCode == 27) {
-                close_overalls();
-            };
+      if (this.options.blank) {
+        overlay.css({
+          width: overlay.children(':first').width(),
+          // height: overlay.children(':first').height()
         });
+      }
 
+      // now that everything's set, fade it in
+      transparency.fadeTo('normal', this.options.opacity);
+      container.fadeTo('normal', 1.0);
 
+      $(document).bind('keyup.overalls', function(e) {
+        if (e.keyCode == 27) {
+          self.close();
+        };
+      });
 
-        function close_overalls() {
-            log('taking the overalls off')
-            $(document).unbind('keyup.overalls')
-            all_divs = $('div#overalls-transparency, div#overalls-super-transparent, div#overalls-overlay').fadeOut(600)
-            setTimeout(function() {
-                all_divs.remove()
-            },
-            650)
-        }
+      transparency.bind('click.overalls', function() { self.close(); });
+      // overlay.bind('click.overalls', function() { return false; }); // allow clicks on the overlay
 
-        function max_z_index() {
-            z = 0
-            $('*').each(function() {
-                current = parseInt($(this).css('zIndex'));
-                z = current > z ? current: z;
-            });
-            return z + 1;
-        }
+      if(callback) { callback.apply(overlay, []); };
+    },
 
-        function parse_options(opts) {
-            if (opts.opacity)
-            overalls.opacity = opts.opacity
-            if (opts.color)
-            overalls.color = opts.color
-        }
+    close: function(callback) {
+      $(document).unbind('.overalls');
+      $('#overalls-container').fadeOut('normal', function() {
+        $(this).remove();
+      });
+      $('#overalls-transparency')
+        .unbind('.overalls')
+        .fadeOut('normal', function() {
+          if(callback) { callback() };
+        });
+    },
 
-        function log() {
-            if (window.console) {
-                console.log.apply(console, arguments);
-            }
-        }
+    isVisible: function() {
+      return $('#overalls-overlay').is(':visible');
+    },
 
+    transparencyDiv: function() {
+      if(!$('#overalls-transparency').length) {
+        $('body').append($('<div id="overalls-transparency"></div>'));
+      }
+      return $('#overalls-transparency');
     }
-    // end of Overalls
-    $.overalls = function(html, opts) {
-        if (!opts)
-        opts = {}
-        var overalls = new Overalls(html, opts)
-        return overalls
+  });
+
+  $.overalls = function(html, opts, callback) {
+    var overalls = $.overalls.instance;
+    if(!overalls) { overalls = $.overalls.instance = new Overalls(); }
+    overalls.options = $.extend({}, $.overalls.defaults, opts || {});
+
+    if(overalls.isVisible()) {
+      overalls.close(function() {
+        overalls.display(html, callback)
+      });
     }
+    else {
+      overalls.display(html, callback);
+    }
+    return overalls;
+  }
+
+  $.overalls.close = function() {
+    if($.overalls.instance && $.overalls.instance.isVisible) {
+      $.overalls.instance.close();
+    }
+  }
+
+  $.overalls.defaults = {
+    opacity: 0.5,
+    color: "#000",
+    zIndex: 100,
+    blank: false,
+    cssClass: null,
+    width: '650px',
+    height: '350px'
+  }
+
+  function log() {
+    if (window.console) {
+      console.log.apply(console, arguments);
+    }
+  }
+
 })(jQuery);
+
