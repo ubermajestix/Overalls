@@ -27,7 +27,8 @@
         height: '100%',
         opacity: 0.0, // fades up to specified opacity later
         zIndex: this.options.zIndex,
-        backgroundColor: this.options.color
+        backgroundColor: this.options.color,
+        display: 'block'
       });
 
       this.setContent(html);
